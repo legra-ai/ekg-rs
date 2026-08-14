@@ -1,6 +1,6 @@
 use {
     crate::{DataType, LiteralIdUrlDisplay, LiteralUrlDisplay, LiteralValue, Term},
-    ekg_identifier::{iri::NamespaceIRI, ABoxNamespaceIRI},
+    ekg_identifier::{ABoxNamespaceIRI, iri::NamespaceIRI},
     ekg_util::log::LOG_TARGET_DATABASE,
     std::{
         fmt::{Debug, Display, Formatter},
@@ -288,7 +288,7 @@ impl FromStr for Literal {
     fn from_str(str: &str) -> Result<Self, Self::Err> { Self::new_plain_literal_string(str) }
 }
 
-#[cfg(feature = "oxigraph")]
+#[cfg(feature = "oxigraph-support")]
 impl From<oxrdf::Literal> for Literal {
     fn from(value: oxrdf::Literal) -> Self {
         // TODO: Temporary simplistic implementation
@@ -506,7 +506,7 @@ impl Literal {
                         id_base_iri,
                     )?))
                 } else {
-                    return match iri_string::types::IriReferenceString::try_from(buffer) {
+                    match iri_string::types::IriReferenceString::try_from(buffer) {
                         Ok(iri) => {
                             tracing::error!(
                                 target: LOG_TARGET_DATABASE,
@@ -525,7 +525,7 @@ impl Literal {
                             );
                             Err(ekg_error::Error::from(error))
                         },
-                    };
+                    }
                 }
             },
             DataType::BlankNode => {
@@ -1003,7 +1003,7 @@ impl Literal {
         JsonLexVal(self)
     }
 
-    pub fn as_url_display(&self) -> LiteralUrlDisplay { LiteralUrlDisplay { literal: self } }
+    pub fn as_url_display(&self) -> LiteralUrlDisplay<'_> { LiteralUrlDisplay { literal: self } }
 
     pub fn as_id_url_display<'a, T: NamespaceIRI>(
         &'a self,
@@ -1016,7 +1016,7 @@ impl Literal {
     pub fn is_id_iri(&self, id_base_iri: &ABoxNamespaceIRI) -> bool {
         match self.data_type {
             DataType::AnyUri | DataType::IriReference => unsafe {
-                id_base_iri.is_in_namespace(&self.literal_value.iri.as_str())
+                id_base_iri.is_in_namespace(self.literal_value.iri.as_str())
             },
             _ => false,
         }
@@ -1025,7 +1025,7 @@ impl Literal {
     pub fn is_in_namespace<T: NamespaceIRI>(&self, namespace: &T) -> bool {
         match self.data_type {
             DataType::AnyUri | DataType::IriReference => unsafe {
-                namespace.is_in_namespace(&self.literal_value.iri.as_str())
+                namespace.is_in_namespace(self.literal_value.iri.as_str())
             },
             _ => false,
         }

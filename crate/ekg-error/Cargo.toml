@@ -9,7 +9,7 @@ readme = "README.md"
 keywords.workspace = true
 publish.workspace = true
 rust-version.workspace = true
-license-file.workspace = true
+license.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

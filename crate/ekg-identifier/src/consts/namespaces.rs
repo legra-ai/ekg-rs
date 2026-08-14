@@ -1,4 +1,4 @@
-use {crate::Namespace, lazy_static::lazy_static, super::prefixes::*};
+use {super::prefixes::*, crate::Namespace, lazy_static::lazy_static};
 
 // Prefixes
 #[rustfmt::skip]

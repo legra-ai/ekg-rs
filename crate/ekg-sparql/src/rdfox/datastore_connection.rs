@@ -6,12 +6,12 @@ use fancy_regex::Regex;
 use owo_colors::OwoColorize;
 use {
     super::{DataStore, ServerConnection, Streamer, Transaction},
-    crate::{fact_domain::FactDomain, prefixes::Prefixes, statement::Statement, Parameters},
+    crate::{Parameters, fact_domain::FactDomain, prefixes::Prefixes, statement::Statement},
     ekg_identifier::ABoxNamespaceIRI,
     ekg_metadata::{
-        consts::{DEFAULT_GRAPH_RDFOX, TEXT_TURTLE},
         Graph,
         Namespace,
+        consts::{DEFAULT_GRAPH_RDFOX, TEXT_TURTLE},
     },
     ekg_util::log::{LOG_TARGET_DATABASE, LOG_TARGET_FILES},
     indoc::formatdoc,

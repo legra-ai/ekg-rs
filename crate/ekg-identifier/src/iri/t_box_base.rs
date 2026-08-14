@@ -1,5 +1,5 @@
 use {
-    crate::{iri::NamespaceIRI, ABoxNamespaceIRI},
+    crate::{ABoxNamespaceIRI, iri::NamespaceIRI},
     serde::{Deserialize, Serialize},
     std::str::FromStr,
 };
@@ -55,7 +55,7 @@ impl std::str::FromStr for TBoxNamespaceIRI {
 impl TryFrom<&str> for TBoxNamespaceIRI {
     type Error = ekg_error::Error;
 
-    fn try_from(iri_str: &str) -> Result<Self, Self::Error> { Ok(Self::from_str(iri_str)?) }
+    fn try_from(iri_str: &str) -> Result<Self, Self::Error> { Self::from_str(iri_str) }
 }
 
 impl TryFrom<String> for TBoxNamespaceIRI {
@@ -72,7 +72,7 @@ impl TryFrom<&iri_string::types::IriReferenceStr> for TBoxNamespaceIRI {
     type Error = ekg_error::Error;
 
     fn try_from(iri: &iri_string::types::IriReferenceStr) -> Result<Self, Self::Error> {
-        Ok(iri.to_string().try_into()?)
+        iri.to_string().try_into()
     }
 }
 

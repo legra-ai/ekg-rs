@@ -5,15 +5,7 @@ branch_whitelist = ["main"]
 pre_bump_hooks = [
     "cargo set-version --workspace {{version}}",
 ]
-post_bump_hooks = [
-    "git push --no-verify",
-    "git push origin {{version}} --no-verify",
-    "cd crate/ekg-error && cargo publish",
-    "cd crate/ekg-util && cargo publish",
-    "cd crate/ekg-identifier && cargo publish",
-    "cd crate/ekg-metadata && cargo publish",
-    "cd crate/ekg-sparql && cargo publish",
-]
+post_bump_hooks = []
 pre_package_bump_hooks = []
 post_package_bump_hooks = []
 
@@ -24,7 +16,7 @@ path = "CHANGELOG.md"
 template = "remote"
 remote = "github.com"
 repository = "ekg-rs"
-owner = "EKGF"
+owner = "legra-ai"
 authors = [
     { username = "jgeluk", signature = "Jacobus Geluk" },
 ]

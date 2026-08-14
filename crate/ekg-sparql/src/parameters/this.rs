@@ -6,8 +6,8 @@ use {
     std::sync::{Arc, Mutex},
 };
 use {
-    super::{builder::ParametersBuilder, SENSITIVE_PARAMETERS},
-    crate::{fact_domain::FactDomain, persistence_mode::PersistenceMode, DatastoreType},
+    super::{SENSITIVE_PARAMETERS, builder::ParametersBuilder},
+    crate::{DatastoreType, fact_domain::FactDomain, persistence_mode::PersistenceMode},
     ekg_error::Error,
     ekg_util::log::LOG_TARGET_DATABASE,
     std::{

@@ -75,8 +75,8 @@ impl Class {
 #[cfg(test)]
 mod tests {
     use {
-        crate::{class::Class, DataType, Literal},
         super::Namespace,
+        crate::{DataType, Literal, class::Class},
     };
 
     #[test]
@@ -98,8 +98,7 @@ mod tests {
             "test:",
             iri_string::types::IriReferenceString::try_from("https://whatever.com/test#")
                 .unwrap()
-                .try_into()
-                .unwrap(),
+                .into(),
         )
         .unwrap();
         let class = Class::declare(namespace, "SomeClass");
@@ -113,8 +112,7 @@ mod tests {
             "test:",
             iri_string::types::IriReferenceString::try_from("https://whatever.com/test#")
                 .unwrap()
-                .try_into()
-                .unwrap(),
+                .into(),
         )
         .unwrap();
         let class = Class::declare(namespace, "SomeClass");

@@ -1,11 +1,11 @@
 #![cfg(feature = "_rdfox")]
 
 use {
-    crate::{rdfox::DataStoreConnection, statement::Statement, Parameters},
-    ekg_metadata::{ptr_to_cstr, Namespace},
+    crate::{Parameters, rdfox::DataStoreConnection, statement::Statement},
+    ekg_metadata::{Namespace, ptr_to_cstr},
     mime::Mime,
     std::{
-        ffi::{c_void, CString},
+        ffi::{CString, c_void},
         fmt::Debug,
         io::Write,
         mem::MaybeUninit,

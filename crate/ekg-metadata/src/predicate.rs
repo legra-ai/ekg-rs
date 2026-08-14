@@ -45,8 +45,7 @@ mod tests {
             "abc:",
             iri_string::types::IriReferenceString::try_from("https://whatever.kg/def/")
                 .unwrap()
-                .try_into()
-                .unwrap(),
+                .into(),
         )
         .unwrap();
         let prd = Predicate::declare(&ns, "xyz");

@@ -5,7 +5,7 @@ use {
     ekg_util::log::LOG_TARGET_DATABASE,
     std::{
         fmt::{Display, Formatter},
-        sync::{atomic::AtomicBool, Arc},
+        sync::{Arc, atomic::AtomicBool},
     },
 };
 

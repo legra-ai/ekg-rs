@@ -16,39 +16,41 @@ jobs:
     name: Format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@nightly
         with:
           components: rustfmt
       - name: Check formatting
         run: cargo +nightly fmt --all -- --check
 
-  # Run clippy linting
+  # Run clippy linting with the default, redistributable feature set. The
+  # all-features graph enables the proprietary RDFox backend, whose SDK is not
+  # available to public GitHub runners.
   clippy:
     name: Clippy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@nightly
         with:
           components: clippy
       - name: Cache cargo registry
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache cargo index
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-git-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache target directory
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: target
           key: ${{ runner.os }}-target-clippy-${{ hashFiles('**/Cargo.lock') }}
       - name: Run clippy
-        run: cargo +nightly clippy --workspace --all-targets --all-features -- -D warnings
+        run: cargo +nightly clippy --workspace --all-targets -- -D warnings
 
   # Run tests
   test:
@@ -59,22 +61,22 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         rust: [stable]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
       - name: Cache cargo registry
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache cargo index
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-git-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache target directory
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: target
           key: ${{ runner.os }}-${{ matrix.rust }}-target-test-${{ hashFiles('**/Cargo.lock') }}
@@ -92,21 +94,21 @@ jobs:
       version_changed: ${{ steps.version.outputs.changed }}
       new_version: ${{ steps.version.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Get current version from Cargo.toml
         id: cargo_version
         run: |
           VERSION=$(grep '^version' Cargo.toml | head -1 | sed 's/.*"\(.*\)".*/\1/')
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "Current Cargo.toml version: $VERSION"
       - name: Get latest git tag
         id: latest_tag
         run: |
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          LATEST_TAG=$(git describe --tags --abbrev=0)
           LATEST_VERSION=${LATEST_TAG#v}
-          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          echo "version=$LATEST_VERSION" >> "$GITHUB_OUTPUT"
           echo "Latest git tag version: $LATEST_VERSION"
       - name: Compare versions
         id: version
@@ -115,11 +117,11 @@ jobs:
           TAG_VERSION="${{ steps.latest_tag.outputs.version }}"
 
           if [ "$CARGO_VERSION" != "$TAG_VERSION" ]; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-            echo "version=$CARGO_VERSION" >> $GITHUB_OUTPUT
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "version=$CARGO_VERSION" >> "$GITHUB_OUTPUT"
             echo "✅ Version changed: $TAG_VERSION -> $CARGO_VERSION"
           else
-            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "ℹ️  Version unchanged: $CARGO_VERSION"
           fi
 
@@ -132,7 +134,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -143,7 +145,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Setup Cocogitto
-        uses: dataroadinc/github-actions/.github/actions/setup-cocogitto@v0.0.1
+        uses: legra-ai/github-actions/.github/actions/setup-cocogitto@main
 
       - name: Ensure Release Tag Exists
         run: |
@@ -167,6 +169,67 @@ jobs:
           cat CHANGELOG.md
           echo "Changelog generated for v${{ needs.version-check.outputs.new_version }}"
 
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Publish workspace crates to crates.io
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+          VERSION: ${{ needs.version-check.outputs.new_version }}
+        run: |
+          version_exists() {
+            crate_name="$1"
+            if response=$(curl -fsS -A "legra-ai-release-workflow" \
+              "https://crates.io/api/v1/crates/$crate_name"); then
+              :
+            else
+              response_rc=$?
+              return "$response_rc"
+            fi
+            printf '%s' "$response" | jq -e --arg version "$VERSION" \
+              '.versions | any(.num == $version)' >/dev/null
+          }
+
+          publish_crate() {
+            manifest="$1"
+            crate_name="$2"
+
+            if version_exists "$crate_name"; then
+              echo "$crate_name $VERSION is already published"
+              return 0
+            else
+              exists_rc=$?
+              if [ "$exists_rc" -ne 1 ]; then
+                return "$exists_rc"
+              fi
+            fi
+
+            if ! cargo publish --manifest-path "$manifest"; then
+              return 1
+            fi
+
+            attempt=1
+            while [ "$attempt" -le 30 ]; do
+              if version_exists "$crate_name"; then
+                return 0
+              else
+                exists_rc=$?
+                if [ "$exists_rc" -ne 1 ]; then
+                  return "$exists_rc"
+                fi
+              fi
+              sleep 10
+              attempt=$((attempt + 1))
+            done
+            echo "$crate_name $VERSION did not become visible on crates.io" >&2
+            return 1
+          }
+
+          publish_crate crate/ekg-error/Cargo.toml ekg-error || exit $?
+          publish_crate crate/ekg-util/Cargo.toml ekg-util || exit $?
+          publish_crate crate/ekg-identifier/Cargo.toml ekg-identifier || exit $?
+          publish_crate crate/ekg-metadata/Cargo.toml ekg-metadata || exit $?
+          publish_crate crate/ekg-sparql/Cargo.toml ekg-sparql || exit $?
+
       - name: Push Release Tag
         run: |
           VERSION="${{ needs.version-check.outputs.new_version }}"
@@ -174,7 +237,7 @@ jobs:
           echo "✅ Pushed tag v$VERSION"
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v${{ needs.version-check.outputs.new_version }}
           name: v${{ needs.version-check.outputs.new_version }}
@@ -183,20 +246,6 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: dtolnay/rust-toolchain@stable
-
-      - name: Publish workspace crates to crates.io
-        run: |
-          # Publish all workspace members
-          for crate in crate/*/; do
-            if [ -f "$crate/Cargo.toml" ]; then
-              echo "Publishing crate in $crate"
-              cargo publish --manifest-path "$crate/Cargo.toml" --token ${{ secrets.CRATES_IO }} || true
-            fi
-          done
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO }}
 
       - name: Release Summary
         run: |

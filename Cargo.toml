@@ -6,7 +6,7 @@ publish = false
 build = "build.rs"
 
 [build-dependencies]
-sloughi = { workspace = true }
+rhusky = { workspace = true }
 
 [workspace]
 members = ["crate/*"]
@@ -259,4 +259,4 @@ chrono = { version = "0.4.45", features = ["serde"] }
 num_enum = "0.7.6"
 phf = { version = "0.14.0", features = ["macros"] }
 fancy-regex = { version = "0.19.0", default-features = true }
-sloughi = "0.3"
+rhusky = "0.0.6"

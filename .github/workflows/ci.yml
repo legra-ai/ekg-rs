@@ -144,30 +144,16 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Setup Cocogitto
-        uses: legra-ai/github-actions/.github/actions/setup-cocogitto@main
-
       - name: Ensure Release Tag Exists
         run: |
           VERSION="${{ needs.version-check.outputs.new_version }}"
-          TAG="v$VERSION"
+          TAG="$VERSION"
           if git rev-parse "$TAG" >/dev/null 2>&1; then
             echo "Tag $TAG already exists."
           else
             git tag -a "$TAG" -m "Release $TAG"
             echo "Created tag $TAG on HEAD."
           fi
-
-      - name: Generate Changelog with Cocogitto
-        id: changelog
-        run: |
-          export PATH="$HOME/.cargo/bin:$PATH"
-          cog changelog --at v${{ needs.version-check.outputs.new_version }} > CHANGELOG.md
-
-      - name: Save Changelog to File
-        run: |
-          cat CHANGELOG.md
-          echo "Changelog generated for v${{ needs.version-check.outputs.new_version }}"
 
       - uses: dtolnay/rust-toolchain@stable
 
@@ -233,15 +219,15 @@ jobs:
       - name: Push Release Tag
         run: |
           VERSION="${{ needs.version-check.outputs.new_version }}"
-          git push origin "v$VERSION"
-          echo "✅ Pushed tag v$VERSION"
+          git push origin "$VERSION"
+          echo "✅ Pushed tag $VERSION"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: v${{ needs.version-check.outputs.new_version }}
-          name: v${{ needs.version-check.outputs.new_version }}
-          body_path: CHANGELOG.md
+          tag_name: ${{ needs.version-check.outputs.new_version }}
+          name: ${{ needs.version-check.outputs.new_version }}
+          generate_release_notes: true
           draft: false
           prerelease: false
         env:
@@ -249,5 +235,5 @@ jobs:
 
       - name: Release Summary
         run: |
-          echo "🎉 Successfully released v${{ needs.version-check.outputs.new_version }}"
-          echo "📝 GitHub Release: https://github.com/${{ github.repository }}/releases/tag/v${{ needs.version-check.outputs.new_version }}"
+          echo "🎉 Successfully released ${{ needs.version-check.outputs.new_version }}"
+          echo "📝 GitHub Release: https://github.com/${{ github.repository }}/releases/tag/${{ needs.version-check.outputs.new_version }}"

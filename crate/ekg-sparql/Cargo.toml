@@ -9,7 +9,7 @@ readme = "README.md"
 keywords.workspace = true
 publish.workspace = true
 rust-version.workspace = true
-license-file.workspace = true
+license.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -66,4 +66,3 @@ rdfox-static = ["_rdfox", "rdfox-sys/rdfox-static", "ekg-error/rdfox-static", "e
 #
 rdfox-7-0a = ["rdfox-sys/rdfox-7-0a", "ekg-error/rdfox-7-0a", "ekg-metadata/rdfox-7-0a"]
 rdfox-7-2a = ["rdfox-sys/rdfox-7-2a", "ekg-error/rdfox-7-2a", "ekg-metadata/rdfox-7-2a"]
-

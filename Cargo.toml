@@ -1,6 +1,6 @@
 [package]
 name = "ekg-rs-workspace"
-version = "0.0.20"
+version = "0.0.21"
 edition = "2024"
 publish = false
 build = "build.rs"
@@ -17,15 +17,12 @@ repository = "https://github.com/legra-ai/ekg-rs"
 readme = "./README.md"
 keywords = ["ekg", "knowledge-graph", "rdf", "aws"]
 description = "Various utility Rust crates for Enterprise Knowledge Graph (EKG) architecture"
-version = "0.0.20"
+version = "0.0.21"
 rust-version = "1.92.0"
 edition = "2024"
 authors = ["Jacobus Geluk <jacobus.geluk@dataroad.com>"]
 publish = true
 license = "MIT OR Apache-2.0"
-
-[profile.dev.package.backtrace]
-opt-level = 3
 
 [profile.dev]
 # less code to include in binary
@@ -55,11 +52,11 @@ opt-level = 'z'
 #
 # Local crates
 #
-ekg-error = { path = "crate/ekg-error", version = "0.0.20" }
-ekg-identifier = { path = "crate/ekg-identifier", version = "0.0.20" }
-ekg-metadata = { path = "crate/ekg-metadata", version = "0.0.20" }
-ekg-sparql = { path = "crate/ekg-sparql", version = "0.0.20" }
-ekg-util = { path = "crate/ekg-util", version = "0.0.20" }
+ekg-error = { path = "crate/ekg-error", version = "0.0.21" }
+ekg-identifier = { path = "crate/ekg-identifier", version = "0.0.21" }
+ekg-metadata = { path = "crate/ekg-metadata", version = "0.0.21" }
+ekg-sparql = { path = "crate/ekg-sparql", version = "0.0.21" }
+ekg-util = { path = "crate/ekg-util", version = "0.0.21" }
 #
 # Tracing & Logging
 #
@@ -67,7 +64,7 @@ tracing = { version = "0.1.44", default-features = false, features = [
     "log",
     "attributes",
 ] }
-tracing-subscriber = { version = "0.3.22", default-features = false, features = [
+tracing-subscriber = { version = "0.3.23", default-features = false, features = [
     "std",
     "fmt",
     "env-filter",
@@ -77,46 +74,46 @@ tracing-subscriber = { version = "0.3.22", default-features = false, features = 
 ] }
 tracing-log = { version = "0.2.0", features = ["env_logger"] }
 tracing-wasm = "0.2.1"
-tracing-opentelemetry = { version = "0.32.0", default-features = false, features = [
+tracing-opentelemetry = { version = "0.33.0", default-features = false, features = [
     "tracing-log",
 ] }
-opentelemetry = { version = "0.31.0", default-features = false, features = [
+opentelemetry = { version = "0.32.0", default-features = false, features = [
     "trace",
 ] }
-opentelemetry_sdk = { version = "0.31.0", default-features = false, features = [
+opentelemetry_sdk = { version = "0.32.1", default-features = false, features = [
     "trace",
 ] }
-opentelemetry-otlp = { version = "0.31.0", default-features = false, features = [
+opentelemetry-otlp = { version = "0.32.0", default-features = false, features = [
     "http-proto",
     "reqwest-client",
 ] }
-opentelemetry-semantic-conventions = { version = "0.31.0", default-features = false }
-test-log = { version = "0.2.19", default-features = false, features = [
+opentelemetry-semantic-conventions = { version = "0.32.1", default-features = false }
+test-log = { version = "0.2.21", default-features = false, features = [
     "trace",
 ] }
-env_logger = { version = "0.11.8", default-features = true, features = [
+env_logger = { version = "0.11.11", default-features = true, features = [
     "regex",
 ] }
 color-eyre = { version = "0.6.5", default-features = false, features = [
     "capture-spantrace",
     "track-caller",
 ] }
-colored = { version = "3.0.0", default-features = true }
-tonic = { version = "0.14.2", features = ["tls-roots"] }
-owo-colors = { version = "4.2.3", features = ["supports-colors"] }
+colored = { version = "3.1.1", default-features = true }
+tonic = { version = "0.14.6", features = ["tls-roots"] }
+owo-colors = { version = "4.3.0", features = ["supports-colors"] }
 #
 # Error handling
 #
-thiserror = { version = "2.0.17", default-features = false }
+thiserror = { version = "2.0.20", default-features = false }
 unreachable = "1.0.0"
-simple-error = "0.3.0"
+simple-error = "0.3.2"
 #
 # Random Stuff
 #
-getrandom = { version = "0.4.0-rc.0" }
-rand = "0.10.0-rc.6"
+getrandom = { version = "0.4.3" }
+rand = "0.10.2"
 # Use the following version of uuid to avoid a conflict with the version of uuid in rdftk
-uuid = { version = "1.19.0", features = [
+uuid = { version = "1.24.0", features = [
     "v4",
     "v5",
     "serde",
@@ -144,34 +141,34 @@ relative-path = { version = "2.0.1", default-features = false, features = [
 #
 # IRI stuff
 #
-iri-string = { version = "0.7.10", default-features = false, features = [
+iri-string = { version = "0.7.14", default-features = false, features = [
     "std",
     "serde",
     "alloc",
 ] }
-iref = { version = "3.2.2", default-features = false, features = ["serde"] }
+iref = { version = "4.2.0", default-features = false, features = ["serde", "std"] }
 static-iref = "3.0.0"
 url = "2.5.8"
 #
 # RDF stuff
 #
-spargebra = { version = "0.4.3", default-features = true }
-rdftk_core = { version = "=0.3.1", default-features = false }
-rdftk_iri = { version = "=0.1.9", default-features = false }
-rdftk_io = { version = "=0.2.1", default-features = false, features = [
+spargebra = { version = "0.4.6", default-features = true }
+rdftk_core = { version = "=0.5.7", default-features = false }
+rdftk_iri = { version = "=0.4.1", default-features = false }
+rdftk_io = { version = "=0.3.4", default-features = false, features = [
     "turtle",
 ] }
 rdfox-sys = { version = "0.0.6", default-features = false }
-oxigraph = { version = "0.5.3", default-features = true }
-oxrdf = { version = "0.3.1", default-features = true }
+oxigraph = { version = "0.5.9", default-features = true }
+oxrdf = { version = "0.3.3", default-features = true }
 r2d2 = "0.8.10"
 #
 # Config stuff
 #
-ignore = { version = "0.4.25", default-features = false }
-config = { version = "0.15.19", default-features = false, features = ["toml"] }
+ignore = { version = "0.4.33", default-features = false }
+config = { version = "0.15.25", default-features = false, features = ["toml"] }
 structopt = "0.3.26"
-clap = { version = "4.5.54", default-features = false, features = [
+clap = { version = "4.6.6", default-features = false, features = [
     "std",
     "color",
     "suggestions",
@@ -182,31 +179,31 @@ clap = { version = "4.5.54", default-features = false, features = [
 #
 # Runtime stuff
 #
-tokio = { version = "1.49.0", default-features = false, features = [
+tokio = { version = "1.53.1", default-features = false, features = [
     "macros",
     "full",
 ] }
 #
 # AWS
 #
-lambda_runtime = { version = "1.1.0-rc1", default-features = true }
-aws-config = { version = "1.8.12", default-features = true, features = [
+lambda_runtime = { version = "1.3.0", default-features = true }
+aws-config = { version = "1.10.1", default-features = true, features = [
     "behavior-version-latest",
 ] }
-aws-types = { version = "1.3.11", default-features = false }
-aws-smithy-runtime = { version = "1.9.5", default-features = false, features = [
+aws-types = { version = "1.5.0", default-features = false }
+aws-smithy-runtime = { version = "1.13.1", default-features = false, features = [
     "client",
     "tls-rustls",
     "connector-hyper-0-14-x",
 ] }
-aws-smithy-runtime-api = { version = "1.9.5", default-features = true }
-aws-sdk-sfn = { version = "1.96.0", default-features = true, features = [
+aws-smithy-runtime-api = { version = "1.14.0", default-features = true }
+aws-sdk-sfn = { version = "1.111.0", default-features = true, features = [
     "behavior-version-latest",
 ] }
-aws-sdk-neptune = { version = "1.94.0", default-features = true, features = [
+aws-sdk-neptune = { version = "1.110.0", default-features = true, features = [
     "behavior-version-latest",
 ] }
-aws-sdk-neptunedata = { version = "1.92.0", default-features = true, features = [
+aws-sdk-neptunedata = { version = "1.107.0", default-features = true, features = [
     "behavior-version-latest",
 ] }
 #
@@ -214,52 +211,52 @@ aws-sdk-neptunedata = { version = "1.92.0", default-features = true, features = 
 #
 # Keep the versions of hyper and hyper-rustls in sync with the versions in aws-smithy-runtime
 #
-http = "1.4.0"
-http-body-util = "0.1.3"
-rustls = { version = "0.23.36", default-features = false, features = [
+http = "1.5.0"
+http-body-util = "0.1.5"
+rustls = { version = "0.23.43", default-features = false, features = [
     "logging",
     "ring",
     "tls12",
 ] }
-hyper = { version = "1.8.1", default-features = false, features = ["full"] }
-hyper-rustls = { version = "0.27.7", default-features = false, features = [
+hyper = { version = "1.11.0", default-features = false, features = ["full"] }
+hyper-rustls = { version = "0.27.9", default-features = false, features = [
     "http2",
     "tls12",
     "webpki-roots",
     "webpki-tokio",
     "logging",
 ] }
-hyper-util = { version = "0.1.19", default-features = false, features = [
+hyper-util = { version = "0.1.20", default-features = false, features = [
     "client",
     "client-legacy",
     "http2",
 ] }
-salvo = { version = "0.88.0", default-features = false }
-salvo_core = "0.88.0"
-webpki-roots = "1.0.5"
+salvo = { version = "0.95.2", default-features = false }
+salvo_core = "0.95.2"
+webpki-roots = "1.0.9"
 mime = "0.3.17"
-reqwest = { version = "0.13.1", default-features = false, features = [
+reqwest = { version = "0.13.4", default-features = false, features = [
     "gzip",
     "json",
     "rustls",
     "hickory-dns",
     "stream",
 ] }
-reqwest-streams = { version = "0.14.0", default-features = false, features = [
+reqwest-streams = { version = "0.17.0", default-features = false, features = [
     "json",
 ] }
 #
 # Git Stuff
 #
-gix = { version = "0.77.0", default-features = true }
-gix-discover = { version = "0.45.0", default-features = true }
+gix = { version = "0.86.0", default-features = true }
+gix-discover = { version = "0.54.0", default-features = true, features = ["sha1"] }
 #
 # Other Stuff
 #
 lazy_static = "1.5.0"
-const_format = "0.2.35"
-chrono = { version = "0.4.42", features = ["serde"] }
-num_enum = "0.7.5"
-phf = { version = "0.13.1", features = ["macros"] }
-fancy-regex = { version = "0.17.0", default-features = true }
+const_format = "0.2.36"
+chrono = { version = "0.4.45", features = ["serde"] }
+num_enum = "0.7.6"
+phf = { version = "0.14.0", features = ["macros"] }
+fancy-regex = { version = "0.19.0", default-features = true }
 sloughi = "0.3"

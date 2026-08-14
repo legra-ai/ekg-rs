@@ -156,7 +156,7 @@ pub enum Error {
     #[error("Encountered SPARQL error \"{source:}\" in\n{statement:}")]
     SPARQLStatementError {
         #[source]
-        source:    spargebra::ParseError,
+        source:    spargebra::SparqlSyntaxError,
         statement: String,
     },
 
@@ -197,14 +197,6 @@ pub enum Error {
     #[error(transparent)]
     ExcelWriterError(#[from] xlsxwriter::XlsxError),
 
-    #[cfg(all(
-        not(target_arch = "wasm32"),
-        feature = "no-wasm",
-        feature = "color-eyre"
-    ))]
-    #[error(transparent)]
-    ColorEyreError(#[from] color_eyre::eyre::ErrReport),
-
     #[cfg(all(feature = "salvo", not(target_arch = "wasm32")))]
     #[error(transparent)]
     InvalidHeaderValue(#[from] salvo::http::header::InvalidHeaderValue),
@@ -240,14 +232,6 @@ pub enum Error {
     #[cfg(all(feature = "reqwest", not(target_arch = "wasm32")))]
     #[error(transparent)]
     StreamBodyError(#[from] reqwest_streams::error::StreamBodyError),
-
-    #[cfg(feature = "iri-string")]
-    #[error(transparent)]
-    IriStringCreationError(#[from] iri_string::types::CreationError<String>),
-
-    #[cfg(feature = "iri")]
-    #[error("Encountered IRI error \"{error:}\" in\n{iri:}")]
-    IrefError { error: ekg_error::Error, iri: String },
 
     #[cfg(feature = "aws-lambda")]
     #[error(transparent)]

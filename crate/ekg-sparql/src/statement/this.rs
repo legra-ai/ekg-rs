@@ -51,7 +51,7 @@ impl Statement {
     ) -> Result<Self, ekg_error::Error> {
         Ok(Self {
             prefixes: prefixes.clone(),
-            text:     format!("{}\n{}", &prefixes.to_string(), statement.trim()),
+            text:     format!("{}\n{}", prefixes, statement.trim()),
             params:   Self::scan_for_params(statement.as_ref(), params)?,
         })
     }
@@ -66,10 +66,10 @@ impl Statement {
         mut params: HashMap<&'static str, &'static str>,
     ) -> Result<HashMap<&'static str, &'static str>, ekg_error::Error> {
         for line in statement.lines().filter(|l| l.starts_with("#")) {
-            if let Some(stripped_line) = line.strip_prefix("# ") {
-                if let Some((key, value)) = Self::scan_for_param(stripped_line) {
-                    params.insert(key, value);
-                }
+            if let Some(stripped_line) = line.strip_prefix("# ") &&
+                let Some((key, value)) = Self::scan_for_param(stripped_line)
+            {
+                params.insert(key, value);
             }
         }
         Ok(params)
@@ -77,20 +77,13 @@ impl Statement {
 
     fn scan_for_param(line: &str) -> Option<(&'static str, &'static str)> {
         let mut parts = line.splitn(2, ':');
-        if let Some(key) = parts.next() {
-            match key {
-                RDFOX_QUERY_VALIDATION => {
-                    if let Some(RDFOX_QUERY_VALIDATION_STANDARD_COMPLIANT) =
-                        parts.next().map(|s| s.trim())
-                    {
-                        return Some((
-                            RDFOX_QUERY_VALIDATION,
-                            RDFOX_QUERY_VALIDATION_STANDARD_COMPLIANT,
-                        ));
-                    }
-                },
-                _ => {},
-            }
+        if let Some(RDFOX_QUERY_VALIDATION) = parts.next() &&
+            let Some(RDFOX_QUERY_VALIDATION_STANDARD_COMPLIANT) = parts.next().map(str::trim)
+        {
+            return Some((
+                RDFOX_QUERY_VALIDATION,
+                RDFOX_QUERY_VALIDATION_STANDARD_COMPLIANT,
+            ));
         }
         None
     }

@@ -1,7 +1,7 @@
 # Reusable GitHub Actions
 
 This repository now uses shared actions from
-[dataroadinc/github-actions](https://github.com/legra-ai/github-actions).
+[legra-ai/github-actions](https://github.com/legra-ai/github-actions).
 
 ## Migration Notice
 
@@ -9,7 +9,7 @@ All local actions have been migrated to use the shared actions
 repository. Workflows now reference:
 
 ```yaml
-uses: dataroadinc/github-actions/.github/actions/action-name@v0.0.1
+uses: legra-ai/github-actions/.github/actions/action-name@v0.0.1
 ```
 
 ## Available Shared Actions
@@ -31,10 +31,10 @@ for complete documentation of all available actions.
 
 ```yaml
 - name: Setup Cocogitto
-  uses: dataroadinc/github-actions/.github/actions/setup-cocogitto@v0.0.1
+  uses: legra-ai/github-actions/.github/actions/setup-cocogitto@v0.0.1
 
 - name: Generate changelog
-  uses: dataroadinc/github-actions/.github/actions/generate-changelog@v0.0.1
+  uses: legra-ai/github-actions/.github/actions/generate-changelog@v0.0.1
   with:
     release-tag: v0.1.0
 ```

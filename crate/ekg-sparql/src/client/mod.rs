@@ -1,10 +1,10 @@
 use {
-    crate::{client::body::Body, statement::Statement, ParsedStatement},
+    crate::{ParsedStatement, client::body::Body, statement::Statement},
     ekg_error::Error,
     ekg_util::{env::mandatory_env_var, log::LOG_TARGET_SPARQL},
     http_body_util::BodyExt,
     hyper_rustls::HttpsConnector,
-    hyper_util::client::legacy::{connect::HttpConnector, Client},
+    hyper_util::client::legacy::{Client, connect::HttpConnector},
     mime::APPLICATION_WWW_FORM_URLENCODED,
     std::{future::Future, pin::Pin},
 };
@@ -127,7 +127,7 @@ impl SPARQLClient {
                 // TODO: limit the amount of memory used here
                 let body_bytes = body.collect().await?.to_bytes();
                 let v: serde_json::Value = serde_json::from_slice::<serde_json::Value>(&body_bytes)
-                    .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e))?;
+                    .map_err(std::io::Error::other)?;
                 tracing::info!("response3: {:?}", serde_json::to_string(&v));
                 Ok(())
             },

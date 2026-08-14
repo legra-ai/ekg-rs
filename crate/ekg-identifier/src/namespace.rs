@@ -91,17 +91,6 @@ impl Namespace {
     #[inline]
     pub fn is_in_namespace(&self, iri: &str) -> bool { self.iri.is_in_namespace(iri) }
 
-    #[cfg(all(feature = "rdftk-support", not(target_arch = "wasm32")))]
-    pub fn as_rdftk_iri_ref(&self) -> Result<rdftk_iri::IRIRef, rdftk_iri::error::Error> {
-        Ok(rdftk_iri::IRIRef::new(self.as_rdftk_iri()?))
-    }
-
-    #[cfg(all(feature = "rdftk-support", not(target_arch = "wasm32")))]
-    pub fn as_rdftk_iri(&self) -> Result<rdftk_iri::IRI, rdftk_iri::error::Error> {
-        use std::str::FromStr;
-        rdftk_iri::IRI::from_str(self.iri.as_str())
-    }
-
     // noinspection SpellCheckingInspection
     pub fn as_sparql_prefix(&self) -> String { format!("PREFIX {} <{}>", self.name, self.iri) }
 
@@ -117,8 +106,7 @@ mod tests {
             "test:",
             iri_string::types::IriReferenceString::try_from("http://whatever.kom/test#")
                 .unwrap()
-                .try_into()
-                .unwrap(),
+                .into(),
         )
         .unwrap();
         let x = namespace.with_local_name("abc")?;
@@ -136,8 +124,7 @@ mod tests {
             "test:",
             iri_string::types::IriReferenceString::try_from("http://whatever.kom/test/")
                 .unwrap()
-                .try_into()
-                .unwrap(),
+                .into(),
         )
         .unwrap();
         let x = namespace.with_local_name("abc")?;

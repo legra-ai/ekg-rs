@@ -51,12 +51,10 @@ impl Graph {
     }
 
     pub fn as_iri(&self) -> Result<iri_string::types::IriReferenceString, ekg_error::Error> {
-        self.namespace
-            .with_local_name(self.local_name.as_str())
-            .map_err(ekg_error::Error::from)
+        self.namespace.with_local_name(self.local_name.as_str())
     }
 
-    pub fn as_display_iri(&self) -> GraphDisplayIRI { GraphDisplayIRI { graph: self } }
+    pub fn as_display_iri(&self) -> GraphDisplayIRI<'_> { GraphDisplayIRI { graph: self } }
 
     pub fn as_c_string(&self) -> Result<CString, ekg_error::Error> {
         // Wrap the graph IRI into a Literal first so that it can convert it into a
@@ -93,7 +91,7 @@ mod tests {
     fn test_display_iri() {
         let ns =
             iri_string::types::IriReferenceString::try_from("https://whatever.kom/graph/").unwrap();
-        let graph_prefix = crate::Namespace::declare("graph:", ns.try_into().unwrap()).unwrap();
+        let graph_prefix = crate::Namespace::declare("graph:", ns.into()).unwrap();
         let graph = crate::Graph::declare(graph_prefix, "somedataset");
 
         assert_eq!(
@@ -111,7 +109,7 @@ mod tests {
     fn test_graph_ns() {
         let ns =
             iri_string::types::IriReferenceString::try_from("https://whatever.kom/graph/").unwrap();
-        let graph_prefix = crate::Namespace::declare("kggraph:", ns.try_into().unwrap()).unwrap();
+        let graph_prefix = crate::Namespace::declare("kggraph:", ns.into()).unwrap();
 
         let graph = crate::Graph::declare(graph_prefix, "somedataset");
         let c_string = graph.as_c_string().unwrap().into_string().unwrap();

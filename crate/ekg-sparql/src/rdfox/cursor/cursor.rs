@@ -3,9 +3,9 @@
 use {
     super::{CursorRow, OpenedCursor},
     crate::{
+        Parameters,
         rdfox::{DataStoreConnection, Transaction},
         statement::Statement,
-        Parameters,
     },
     ekg_util::log::LOG_TARGET_DATABASE,
     std::{ffi::CString, fmt::Debug, ptr, sync::Arc},

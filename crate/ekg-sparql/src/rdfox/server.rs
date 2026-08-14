@@ -2,14 +2,14 @@
 
 use {
     crate::{
-        rdfox::{RoleCreds, ServerConnection},
         Parameters,
+        rdfox::{RoleCreds, ServerConnection},
     },
     ekg_util::log::LOG_TARGET_DATABASE,
     std::{
         ffi::CString,
         ptr,
-        sync::{atomic::AtomicBool, Arc},
+        sync::{Arc, atomic::AtomicBool},
     },
 };
 

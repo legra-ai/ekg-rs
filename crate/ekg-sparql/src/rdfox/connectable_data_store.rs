@@ -4,8 +4,8 @@ use {
     crate::rdfox::{DataStore, DataStoreConnection, ServerConnection},
     ::r2d2::{ManageConnection, Pool},
     std::sync::{
-        atomic::{AtomicBool, Ordering},
         Arc,
+        atomic::{AtomicBool, Ordering},
     },
 };
 

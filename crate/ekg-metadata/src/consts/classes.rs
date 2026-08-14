@@ -2,7 +2,7 @@
 #![allow(clippy::wildcard_imports)]
 
 use {
-    crate::{consts::local_names::*, Class},
+    crate::{Class, consts::local_names::*},
     ekg_identifier::{
         NS_CONCEPT,
         NS_DATASET,

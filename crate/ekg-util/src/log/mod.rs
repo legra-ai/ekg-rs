@@ -1,7 +1,7 @@
 #![allow(missing_docs)]
 
 use ekg_error::Error;
-#[cfg(all(not(target_family = "wasm")))]
+#[cfg(not(target_family = "wasm"))]
 use owo_colors::OwoColorize;
 
 pub const LOG_TARGET_TRANSFORM: &str = "transform";
@@ -189,20 +189,20 @@ pub fn does_console_support_color() -> bool { return false; }
 
 #[cfg(not(target_family = "wasm"))]
 pub fn does_console_support_color() -> bool {
-    if let Ok(term) = std::env::var("TERM") {
-        if term.as_str() == "dumb" {
-            return false;
-        }
+    if let Ok(term) = std::env::var("TERM") &&
+        term.as_str() == "dumb"
+    {
+        return false;
     }
-    if let Ok(no_color) = std::env::var("NO_COLOR") {
-        if no_color.as_str() == "1" {
-            return false;
-        }
+    if let Ok(no_color) = std::env::var("NO_COLOR") &&
+        no_color.as_str() == "1"
+    {
+        return false;
     }
-    if let Ok(style) = std::env::var("RUST_LOG_STYLE") {
-        if style.as_str() == "never" {
-            return false;
-        }
+    if let Ok(style) = std::env::var("RUST_LOG_STYLE") &&
+        style.as_str() == "never"
+    {
+        return false;
     }
 
     true

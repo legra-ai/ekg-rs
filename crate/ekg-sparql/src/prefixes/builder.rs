@@ -28,8 +28,8 @@ impl PrefixesBuilder {
             .declare(NS_XSD.deref())
     }
 
-    pub fn declare_namespaces(mut self, namespaces: &Vec<Namespace>) -> Self {
-        self.prefixes.append(&mut namespaces.clone());
+    pub fn declare_namespaces(mut self, namespaces: &[Namespace]) -> Self {
+        self.prefixes.extend_from_slice(namespaces);
         self
     }
 

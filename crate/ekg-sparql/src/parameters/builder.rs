@@ -1,6 +1,6 @@
 use {
     super::Parameters,
-    crate::{fact_domain::FactDomain, DatastoreType, PersistenceMode},
+    crate::{DatastoreType, PersistenceMode, fact_domain::FactDomain},
     std::{
         default::Default,
         path::{Path, PathBuf},
@@ -9,13 +9,12 @@ use {
 
 #[derive(Default)]
 pub struct ParametersBuilder {
-    fact_domain:                    Option<FactDomain>,
-    persist_datastore:              Option<PersistenceMode>,
-    file_access_sandboxing:         Option<bool>,
-    license_dir:                    Option<PathBuf>,
-    server_directory:               Option<PathBuf>,
-    import_rename_user_blank_nodes: Option<bool>,
-    datastore_type:                 Option<DatastoreType>,
+    fact_domain:            Option<FactDomain>,
+    persist_datastore:      Option<PersistenceMode>,
+    file_access_sandboxing: Option<bool>,
+    license_dir:            Option<PathBuf>,
+    server_directory:       Option<PathBuf>,
+    datastore_type:         Option<DatastoreType>,
 }
 
 impl ParametersBuilder {
@@ -56,24 +55,6 @@ impl ParametersBuilder {
         self
     }
 
-    #[cfg(any(feature = "rdfox-6-2", feature = "rdfox-6-3a", feature = "rdfox-6-3b"))]
-    pub fn import_rename_user_blank_nodes(
-        &mut self,
-        import_rename_user_blank_nodes: bool,
-    ) -> &mut Self {
-        self.import_rename_user_blank_nodes = Some(import_rename_user_blank_nodes);
-        self
-    }
-
-    #[cfg(not(any(feature = "rdfox-6-2", feature = "rdfox-6-3a", feature = "rdfox-6-3b")))]
-    pub fn import_rename_user_blank_nodes(
-        &mut self,
-        _import_rename_user_blank_nodes: bool,
-    ) -> &mut Self {
-        tracing::warn!(target: ekg_util::log::LOG_TARGET_DATABASE, "import_rename_user_blank_nodes no longer supported");
-        self
-    }
-
     pub fn datastore_type(&mut self, datastore_type: DatastoreType) -> &mut Self {
         self.datastore_type = Some(datastore_type);
         self
@@ -93,17 +74,14 @@ impl ParametersBuilder {
         if let Some(server_directory) = &self.server_directory {
             to_build.server_directory(server_directory)?;
         }
-        if let Some(import_rename_user_blank_nodes) = &self.import_rename_user_blank_nodes {
-            to_build.import_rename_user_blank_nodes(*import_rename_user_blank_nodes)?;
-        }
         if let Some(datastore_type) = self.datastore_type {
             to_build.datastore_type(datastore_type)?;
         }
         // Do this one last in case sandbox directory has been set
-        if let Some(file_access_sandboxing) = self.file_access_sandboxing {
-            if !file_access_sandboxing {
-                to_build.switch_off_file_access_sandboxing()?;
-            }
+        if let Some(file_access_sandboxing) = self.file_access_sandboxing &&
+            !file_access_sandboxing
+        {
+            to_build.switch_off_file_access_sandboxing()?;
         }
         Ok(to_build)
     }

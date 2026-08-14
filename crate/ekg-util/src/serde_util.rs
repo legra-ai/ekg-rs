@@ -1,4 +1,4 @@
-use serde::{de::Error, Deserialize, Serializer};
+use serde::{Deserialize, Serializer, de::Error};
 
 pub fn serialize_uri<S>(
     uri: &iri_string::types::IriReferenceString,
@@ -33,7 +33,7 @@ pub fn deserialize_uri<'de, D>(
 ) -> Result<iri_string::types::IriReferenceString, D::Error>
 where D: serde::Deserializer<'de> {
     let s: String = Deserialize::deserialize(deserializer)?;
-    iri_string::types::IriReferenceString::try_from(s).map_err(|e| Error::custom(e))
+    iri_string::types::IriReferenceString::try_from(s).map_err(Error::custom)
 }
 
 pub fn serialize_bool_as_uppercase<S>(b: &bool, serializer: S) -> Result<S::Ok, S::Error>

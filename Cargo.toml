@@ -20,7 +20,7 @@ description = "Various utility Rust crates for Enterprise Knowledge Graph (EKG) 
 version = "0.0.21"
 rust-version = "1.92.0"
 edition = "2024"
-authors = ["Jacobus Geluk <jacobus.geluk@dataroad.com>"]
+authors = ["DataRoad Inc, Delaware, USA, trading as Legra"]
 publish = true
 license = "MIT OR Apache-2.0"
 

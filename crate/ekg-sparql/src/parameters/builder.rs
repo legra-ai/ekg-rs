@@ -1,6 +1,6 @@
 use {
     super::Parameters,
-    crate::{fact_domain::FactDomain, DatastoreType, PersistenceMode},
+    crate::{DatastoreType, PersistenceMode, fact_domain::FactDomain},
     std::{
         default::Default,
         path::{Path, PathBuf},

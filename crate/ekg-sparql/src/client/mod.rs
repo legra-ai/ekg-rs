@@ -1,10 +1,10 @@
 use {
-    crate::{client::body::Body, statement::Statement, ParsedStatement},
+    crate::{ParsedStatement, client::body::Body, statement::Statement},
     ekg_error::Error,
     ekg_util::{env::mandatory_env_var, log::LOG_TARGET_SPARQL},
     http_body_util::BodyExt,
     hyper_rustls::HttpsConnector,
-    hyper_util::client::legacy::{connect::HttpConnector, Client},
+    hyper_util::client::legacy::{Client, connect::HttpConnector},
     mime::APPLICATION_WWW_FORM_URLENCODED,
     std::{future::Future, pin::Pin},
 };
@@ -98,10 +98,7 @@ impl SPARQLClient {
                 hyper::http::header::CONTENT_TYPE,
                 APPLICATION_WWW_FORM_URLENCODED.as_ref(),
             )
-            .header(
-                hyper::http::header::ACCEPT,
-                accept_header,
-            )
+            .header(hyper::http::header::ACCEPT, accept_header)
             // See https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-sparql-http-trailing-headers.html
             .header(hyper::http::header::TE, "trailers, deflate, gzip")
             .body(Self::statement_as_body(&parsed_statement)?)?;
@@ -133,7 +130,8 @@ impl SPARQLClient {
             },
             Err(error) => {
                 tracing::error!("error: {:?}", error);
-                // Convert hyper_util::client::legacy::Error to Error via ServiceError
+                // Convert hyper_util::client::legacy::Error to Error via
+                // ServiceError
                 Err(Error::ServiceError(format!("{}", error)))
             },
         }

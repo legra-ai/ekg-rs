@@ -59,8 +59,8 @@ impl Graph {
     pub fn as_display_iri(&self) -> GraphDisplayIRI { GraphDisplayIRI { graph: self } }
 
     pub fn as_c_string(&self) -> Result<CString, ekg_error::Error> {
-        // Wrap the graph IRI into a Literal first so that it can convert it into a
-        // turtle style identifier first
+        // Wrap the graph IRI into a Literal first so that it can convert it
+        // into a turtle style identifier first
         let literal = self.as_lexical_value()?;
         CString::new(literal.to_string().as_str()).map_err(ekg_error::Error::from)
     }

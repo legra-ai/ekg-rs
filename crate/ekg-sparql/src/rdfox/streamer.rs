@@ -1,11 +1,11 @@
 #![cfg(feature = "_rdfox")]
 
 use {
-    crate::{rdfox::DataStoreConnection, statement::Statement, Parameters},
-    ekg_metadata::{ptr_to_cstr, Namespace},
+    crate::{Parameters, rdfox::DataStoreConnection, statement::Statement},
+    ekg_metadata::{Namespace, ptr_to_cstr},
     mime::Mime,
     std::{
-        ffi::{c_void, CString},
+        ffi::{CString, c_void},
         fmt::Debug,
         io::Write,
         mem::MaybeUninit,
@@ -147,8 +147,9 @@ impl<'a, W: 'a + Write> Streamer<'a, W> {
             Ok(data_c_str) => {
                 tracing::trace!("{streamer:p}: writing {number_of_bytes_to_write} bytes (a)");
                 let data = if streamer.remaining_buffer.borrow().is_some() {
-                    // If we have some remaining bytes from the previous call to `write_function`
-                    // then concatenate them here with the new buffer..
+                    // If we have some remaining bytes from the previous call to
+                    // `write_function` then concatenate
+                    // them here with the new buffer..
                     [
                         streamer
                             .remaining_buffer
@@ -170,9 +171,12 @@ impl<'a, W: 'a + Write> Streamer<'a, W> {
                             data_len
                         );
                         if len < data_len {
-                            // When we didn't process the last part of the buffer (probably because
-                            // the last N-Triple line was not complete), then save the remainder
-                            // in `remaining_buffer` for the next call to `write_function`
+                            // When we didn't process the last part of the
+                            // buffer (probably because
+                            // the last N-Triple line was not complete), then
+                            // save the remainder in
+                            // `remaining_buffer` for the next call to
+                            // `write_function`
                             streamer.remaining_buffer.replace(Some(unsafe {
                                 String::from_utf8_unchecked(data[len..].to_vec())
                             }));

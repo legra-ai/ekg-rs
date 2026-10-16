@@ -4,12 +4,12 @@ pub use {
     consts::*,
     ekg_identifier_context::{EkgIdentifierContext, EkgIdentifierContexts},
     iri::{
-        mandatory_env_var_base_iri,
-        mandatory_env_var_uri,
         ABoxNamespaceIRI,
         NamespaceIRI,
         OwnedIRI,
         TBoxNamespaceIRI,
+        mandatory_env_var_base_iri,
+        mandatory_env_var_uri,
     },
     namespace::Namespace,
 };

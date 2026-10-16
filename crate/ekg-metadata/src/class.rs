@@ -75,8 +75,8 @@ impl Class {
 #[cfg(test)]
 mod tests {
     use {
-        crate::{class::Class, DataType, Literal},
         super::Namespace,
+        crate::{DataType, Literal, class::Class},
     };
 
     #[test]

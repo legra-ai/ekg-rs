@@ -1,6 +1,6 @@
 #![cfg(test)]
 
-use crate::{prefixes::Prefixes, statement::Statement, SPARQLClient};
+use crate::{SPARQLClient, prefixes::Prefixes, statement::Statement};
 
 #[test_log::test(tokio::test)]
 async fn test_sparql_client() -> Result<(), ekg_error::Error> {

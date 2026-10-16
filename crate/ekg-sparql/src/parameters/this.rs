@@ -6,8 +6,8 @@ use {
     std::sync::{Arc, Mutex},
 };
 use {
-    super::{builder::ParametersBuilder, SENSITIVE_PARAMETERS},
-    crate::{fact_domain::FactDomain, persistence_mode::PersistenceMode, DatastoreType},
+    super::{SENSITIVE_PARAMETERS, builder::ParametersBuilder},
+    crate::{DatastoreType, fact_domain::FactDomain, persistence_mode::PersistenceMode},
     ekg_error::Error,
     ekg_util::log::LOG_TARGET_DATABASE,
     std::{
@@ -188,8 +188,9 @@ impl Parameters {
     }
 
     pub fn license_content(&mut self, content: &str) -> Result<&mut Self, Error> {
-        // Content that comes in via an environment variable can have literal `\\n`
-        // strings in them that should be replaced by actual line-feeds
+        // Content that comes in via an environment variable can have literal
+        // `\\n` strings in them that should be replaced by actual
+        // line-feeds
         let content = content.replace("\r\n", "\n").replace("\\n", "\n");
         // Add a line feed at the end of the content just to make sure, if it's
         // missing the last field in the license key will not be recognized

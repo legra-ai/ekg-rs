@@ -1,5 +1,5 @@
 use {
-    crate::{iri::NamespaceIRI, TBoxNamespaceIRI},
+    crate::{TBoxNamespaceIRI, iri::NamespaceIRI},
     ekg_error::Error,
     iref::Iri,
     serde::{Deserialize, Serialize},

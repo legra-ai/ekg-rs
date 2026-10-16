@@ -1,6 +1,6 @@
 use {
     crate::{DataType, LiteralIdUrlDisplay, LiteralUrlDisplay, LiteralValue, Term},
-    ekg_identifier::{iri::NamespaceIRI, ABoxNamespaceIRI},
+    ekg_identifier::{ABoxNamespaceIRI, iri::NamespaceIRI},
     ekg_util::log::LOG_TARGET_DATABASE,
     std::{
         fmt::{Debug, Display, Formatter},
@@ -775,8 +775,9 @@ impl Literal {
             Ok(ref iri) => Self::new_iri_with_datatype(iri, data_type),
             Err(error) => {
                 if let Some(id_base_iri) = id_base_iri {
-                    // If we passed a base IRI and the given IRI string is just an identifier,
-                    // then stick the base IRI in front of it
+                    // If we passed a base IRI and the given IRI string is just
+                    // an identifier, then stick the base
+                    // IRI in front of it
                     let iri_str = iri_string::types::IriReferenceString::try_from(format!(
                         "{}/{}",
                         id_base_iri, iri_string

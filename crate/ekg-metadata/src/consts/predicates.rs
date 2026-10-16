@@ -2,7 +2,7 @@
 #![allow(clippy::wildcard_imports)]
 
 use {
-    crate::{consts::*, Predicate},
+    crate::{Predicate, consts::*},
     ekg_identifier::{
         NS_API,
         NS_BN,

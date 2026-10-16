@@ -14,7 +14,7 @@ use {
 };
 use {
     ekg_identifier::{NS_CONCEPT, NS_SKOS},
-    ekg_metadata::{consts::APPLICATION_N_QUADS, Graph, Literal, Namespace},
+    ekg_metadata::{Graph, Literal, Namespace, consts::APPLICATION_N_QUADS},
     ekg_sparql::rdfox::{
         DataStore,
         DataStoreConnection,

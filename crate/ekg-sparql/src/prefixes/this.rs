@@ -8,7 +8,7 @@ use {
 };
 use {
     crate::prefixes::{PrefixesBuilder, PrefixesDeclareResult},
-    ekg_identifier::{Namespace, TBoxNamespaceIRI, NS_OWL, NS_RDF, NS_RDFS, NS_XSD},
+    ekg_identifier::{NS_OWL, NS_RDF, NS_RDFS, NS_XSD, Namespace, TBoxNamespaceIRI},
     ekg_metadata::{Class, Predicate},
     ekg_util::log::LOG_TARGET_DATABASE,
     std::{

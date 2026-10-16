@@ -2,11 +2,11 @@
 
 use {
     crate::{
+        Parameters,
         fact_domain::FactDomain,
         prefixes::Prefixes,
         rdfox::{DataStoreConnection, Transaction},
         statement::Statement,
-        Parameters,
     },
     ekg_metadata::Graph,
     ekg_util::log::LOG_TARGET_DATABASE,

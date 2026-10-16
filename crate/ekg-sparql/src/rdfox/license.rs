@@ -1,7 +1,7 @@
 #![cfg(feature = "_rdfox")]
 
 use {
-    ekg_util::log::{log_path, LOG_TARGET_DATABASE},
+    ekg_util::log::{LOG_TARGET_DATABASE, log_path},
     std::path::{Path, PathBuf},
 };
 

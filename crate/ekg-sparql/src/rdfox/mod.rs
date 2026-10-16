@@ -10,7 +10,7 @@ pub use {
     data_store::DataStore,
     datastore_connection::DataStoreConnection,
     graph_connection::GraphConnection,
-    license::{find_license, RDFOX_DEFAULT_LICENSE_FILE_NAME, RDFOX_HOME},
+    license::{RDFOX_DEFAULT_LICENSE_FILE_NAME, RDFOX_HOME, find_license},
     mime::Mime,
     role_creds::RoleCreds,
     server::Server,

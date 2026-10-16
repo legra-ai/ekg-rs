@@ -1,4 +1,4 @@
-use serde::{de::Error, Deserialize, Serializer};
+use serde::{Deserialize, Serializer, de::Error};
 
 pub fn serialize_uri<S>(
     uri: &iri_string::types::IriReferenceString,

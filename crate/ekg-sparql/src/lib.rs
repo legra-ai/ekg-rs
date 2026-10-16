@@ -13,8 +13,11 @@ pub use {
     persistence_mode::PersistenceMode,
     prefixes::Prefixes,
     statement::{
-        no_comments, SPARQLStatementType, Statement, RDFOX_QUERY_VALIDATION,
+        RDFOX_QUERY_VALIDATION,
         RDFOX_QUERY_VALIDATION_STANDARD_COMPLIANT,
+        SPARQLStatementType,
+        Statement,
+        no_comments,
     },
 };
 

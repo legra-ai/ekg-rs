@@ -1,5 +1,5 @@
 use {
-    crate::{iri::NamespaceIRI, ABoxNamespaceIRI},
+    crate::{ABoxNamespaceIRI, iri::NamespaceIRI},
     serde::{Deserialize, Serialize},
     std::str::FromStr,
 };

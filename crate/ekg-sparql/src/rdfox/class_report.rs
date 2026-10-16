@@ -6,7 +6,7 @@ use {
         rdfox::{GraphConnection, Transaction},
         statement::Statement,
     },
-    ekg_metadata::{consts::DEFAULT_GRAPH_RDFOX, Class},
+    ekg_metadata::{Class, consts::DEFAULT_GRAPH_RDFOX},
     indoc::formatdoc,
     std::{ops::Deref, sync::Arc},
 };

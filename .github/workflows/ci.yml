@@ -20,8 +20,9 @@ jobs:
       - uses: dtolnay/rust-toolchain@1.99.1
         with:
           components: rustfmt
-      - uses: dtolnay/rust-toolchain@nightly-2026-10-16
+      - uses: dtolnay/rust-toolchain@nightly
         with:
+          toolchain: nightly-2026-10-16
           components: rustfmt
       - name: Check formatting
         run: cargo +nightly-2026-10-16 fmt --all -- --check
@@ -146,7 +147,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Setup Cocogitto
-        uses: dataroadinc/github-actions/.github/actions/setup-cocogitto@v0.0.1
+        uses: dataroadinc/github-actions/.github/actions/setup-cocogitto@main
 
       - name: Ensure Release Tag Exists
         run: |

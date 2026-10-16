@@ -1,7 +1,7 @@
 #![allow(missing_docs)]
 
 use ekg_error::Error;
-#[cfg(all(not(target_family = "wasm")))]
+#[cfg(not(target_family = "wasm"))]
 use owo_colors::OwoColorize;
 
 pub const LOG_TARGET_TRANSFORM: &str = "transform";
@@ -188,6 +188,7 @@ where T: FnOnce() -> U + 'a {
 pub fn does_console_support_color() -> bool { return false; }
 
 #[cfg(not(target_family = "wasm"))]
+#[allow(clippy::collapsible_if)]
 pub fn does_console_support_color() -> bool {
     if let Ok(term) = std::env::var("TERM") {
         if term.as_str() == "dumb" {

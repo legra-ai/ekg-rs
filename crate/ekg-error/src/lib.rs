@@ -156,7 +156,7 @@ pub enum Error {
     #[error("Encountered SPARQL error \"{source:}\" in\n{statement:}")]
     SPARQLStatementError {
         #[source]
-        source:    spargebra::ParseError,
+        source:    spargebra::SparqlSyntaxError,
         statement: String,
     },
 
@@ -175,9 +175,6 @@ pub enum Error {
 
     #[error(transparent)]
     IriStringParseError(#[from] iri_string::validate::Error),
-
-    #[error(transparent)]
-    IriStringCreationError(#[from] iri_string::types::CreationError<String>),
 
     #[error(transparent)]
     CApiError(#[from] std::ffi::NulError),
@@ -247,7 +244,7 @@ pub enum Error {
 
     #[cfg(feature = "iri")]
     #[error("Encountered IRI error \"{error:}\" in\n{iri:}")]
-    IrefError { error: ekg_error::Error, iri: String },
+    IrefError { error: Box<Error>, iri: String },
 
     #[cfg(feature = "aws-lambda")]
     #[error(transparent)]

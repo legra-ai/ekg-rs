@@ -2,7 +2,7 @@ use ekg_error::Error;
 
 pub fn mandatory_env_var(name: &str, suffix: Option<&'static str>) -> Result<String, Error> {
     let env_var_name = format!("{}{}", name, suffix.unwrap_or(""));
-    let val = match std::env::var(env_var_name.as_str()) {
+    match std::env::var(env_var_name.as_str()) {
         Ok(val) => {
             if val.trim().is_empty() {
                 Err(Error::EnvironmentVariableEmpty(
@@ -17,8 +17,7 @@ pub fn mandatory_env_var(name: &str, suffix: Option<&'static str>) -> Result<Str
                 env_var_name.to_string(),
             ))
         },
-    };
-    val
+    }
 }
 
 pub fn mandatory_env_var_static(

@@ -25,7 +25,7 @@ iri-string.workspace = true
 ignore = { workspace = true, optional = true }
 iref = { workspace = true, optional = true }
 url = { workspace = true, optional = true }
-rdftk_core = { workspace = true, optional = true, default-features = false }
+rdftk_core = { workspace = true, optional = true }
 rdftk_iri = { workspace = true, optional = true, default-features = false }
 reqwest = { workspace = true, optional = true }
 aws-types = { workspace = true, optional = true }
@@ -44,6 +44,9 @@ nom.workspace = true
 hyper.workspace = true
 uuid = { workspace = true, optional = true }
 xlsxwriter = { workspace = true, optional = true }
+tauri = { workspace = true, optional = true }
+color-eyre = { workspace = true, optional = true }
+tokio = { workspace = true, optional = true }
 
 [target.'cfg(target_family = "wasm")'.dependencies]
 uuid = { workspace = true, optional = true, features = ["js"] }
@@ -65,8 +68,12 @@ oxigraph-support = ["sparql"]
 uuid = ["dep:uuid"]
 reqwest = ["dep:reqwest", "dep:reqwest-streams", "dep:url"]
 gix = ["dep:gix-discover"]
-tauri = []
-tokio = []
+tauri = ["dep:tauri"]
+tokio = ["dep:tokio"]
 salvo = ["dep:salvo", "dep:salvo_core"]
 tracing-subscriber = ["dep:tracing", "dep:tracing-subscriber"]
 xlsx = ["dep:xlsxwriter"]
+iri-string = []
+iri = []
+color-eyre = ["dep:color-eyre"]
+no-wasm = []

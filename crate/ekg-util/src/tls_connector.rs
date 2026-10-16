@@ -5,8 +5,8 @@
 //! crate because we do not want the ekg-util crate to have a dependency on any
 //! AWS SDK crates.
 use {
-    hyper::client::connect::HttpConnector,
     hyper_rustls::{HttpsConnector, HttpsConnectorBuilder},
+    hyper_util::client::legacy::connect::HttpConnector,
 };
 
 /// Create a TLS 1.3 connector to be used with Hyper, AWS SDK, etc.

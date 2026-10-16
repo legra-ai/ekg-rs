@@ -1,0 +1,9 @@
+{
+  "fileheader.configObj": {
+    "autoAdd": false
+  },
+  "files.trimTrailingWhitespace": true,
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  }
+}

@@ -17,11 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@nightly
+      - uses: dtolnay/rust-toolchain@1.99.1
         with:
           components: rustfmt
       - name: Check formatting
-        run: cargo +nightly fmt --all -- --check
+        run: cargo fmt --all -- --check
 
   # Run clippy linting
   clippy:
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@nightly
+      - uses: dtolnay/rust-toolchain@1.99.1
         with:
           components: clippy
       - name: Cache cargo registry
@@ -48,7 +48,7 @@ jobs:
           path: target
           key: ${{ runner.os }}-target-clippy-${{ hashFiles('**/Cargo.lock') }}
       - name: Run clippy
-        run: cargo +nightly clippy --workspace --all-targets --all-features -- -D warnings
+        run: cargo clippy --workspace --all-targets --all-features -- -D warnings
 
   # Run tests
   test:
@@ -184,7 +184,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@1.99.1
 
       - name: Publish workspace crates to crates.io
         run: |

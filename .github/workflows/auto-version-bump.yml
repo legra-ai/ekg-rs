@@ -68,7 +68,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@1.99.1
 
       - name: Setup Cocogitto (cached)
         uses: dataroadinc/github-actions/.github/actions/setup-cocogitto@v0.0.1

@@ -188,8 +188,9 @@ impl Parameters {
     }
 
     pub fn license_content(&mut self, content: &str) -> Result<&mut Self, Error> {
-        // Content that comes in via an environment variable can have literal `\\n`
-        // strings in them that should be replaced by actual line-feeds
+        // Content that comes in via an environment variable can have literal
+        // `\\n` strings in them that should be replaced by actual
+        // line-feeds
         let content = content.replace("\r\n", "\n").replace("\\n", "\n");
         // Add a line feed at the end of the content just to make sure, if it's
         // missing the last field in the license key will not be recognized

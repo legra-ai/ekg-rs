@@ -1,56 +1,40 @@
-# Dependabot configuration for automated dependency updates
-# Updates are grouped and scheduled weekly (Sunday 10 PM UTC)
-# See: https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
-
 version: 2
 updates:
-  - package-ecosystem: "cargo"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "sunday"
-      time: "22:00"
-      timezone: "Etc/UTC"
-    # Group all dependency updates into a single PR
-    groups:
-      all-dependencies:
-        applies-to: "version-updates"
-        patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
-    # Allow both direct and indirect dependencies
-    allow:
-      - dependency-type: "all"
-    # Update to the latest version when possible
-    versioning-strategy: "increase"
-    # Keep PRs manageable
-    open-pull-requests-limit: 5
-    # Add labels for easier identification
-    labels:
-      - "dependencies"
-      - "automated"
-    # Commit message prefix follows conventional commits
-    commit-message:
-      prefix: "build"
-      prefix-development: "build"
-      include: "scope"
-
-  # Also check for GitHub Actions updates weekly
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "sunday"
-      time: "22:00"
-      timezone: "Etc/UTC"
-    groups:
-      github-actions:
-        patterns:
-          - "*"
-    labels:
-      - "github-actions"
-      - "automated"
-    commit-message:
-      prefix: "ci"
+- package-ecosystem: cargo
+  directory: /
+  schedule:
+    interval: daily
+    time: '22:00'
+    timezone: Etc/UTC
+  groups:
+    all-dependencies:
+      applies-to: version-updates
+      patterns:
+      - '*'
+      update-types:
+      - minor
+      - patch
+  allow:
+  - dependency-type: all
+  versioning-strategy: increase
+  open-pull-requests-limit: 5
+  labels:
+  - dependencies
+  - automated
+  commit-message:
+    prefix: build(deps)
+- package-ecosystem: github-actions
+  directory: /
+  schedule:
+    interval: daily
+    time: '22:00'
+    timezone: Etc/UTC
+  groups:
+    github-actions:
+      patterns:
+      - '*'
+  labels:
+  - github-actions
+  - automated
+  commit-message:
+    prefix: ci(deps)

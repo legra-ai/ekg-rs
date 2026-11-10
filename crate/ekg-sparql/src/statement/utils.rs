@@ -22,8 +22,9 @@ pub fn no_comments(string: &str) -> String {
         loop {
             let (again, result) = do_line(line.as_str());
             if again {
-                // Repeat the call to do_line again to make sure that all #-comments are removed
-                // (there could be multiple on one line)
+                // Repeat the call to do_line again to make sure that all
+                // #-comments are removed (there could be
+                // multiple on one line)
                 line = result;
             } else {
                 writeln!(&mut output, "{result}").unwrap();

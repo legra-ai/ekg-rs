@@ -33,7 +33,8 @@ impl CParametersHandle {
             rdfox_sys::CParameters_newEmptyParameters(&mut c_params)
         )?;
         let result = CParametersHandle(ManuallyDrop::new(c_params));
-        // tracing::trace!(target: LOG_TARGET_DATABASE, "Allocated {:?}", result);
+        // tracing::trace!(target: LOG_TARGET_DATABASE, "Allocated {:?}",
+        // result);
         Ok(result)
     }
 

@@ -50,9 +50,9 @@ impl ParsedStatement {
         base_ns: Option<&Namespace>,
     ) -> Result<(SPARQLStatementType, Option<Query>, Option<Update>), ekg_error::Error> {
         let base_iri = base_ns.map(|ns| ns.iri.to_string());
-        // First figure out whether we are dealing with a SPARQL update-statement by
-        // attempting to parse it. If that fails, we'll treat it as a SPARQL
-        // query-statement.
+        // First figure out whether we are dealing with a SPARQL
+        // update-statement by attempting to parse it. If that fails,
+        // we'll treat it as a SPARQL query-statement.
         match Self::parser(base_iri.as_deref())?.parse_update(statement.as_str()) {
             Ok(algebra) => {
                 Ok((

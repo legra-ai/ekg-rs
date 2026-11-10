@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - run: python3 scripts/test_dependabot_policy.py
       - uses: dtolnay/rust-toolchain@nightly
         with:
           components: rustfmt

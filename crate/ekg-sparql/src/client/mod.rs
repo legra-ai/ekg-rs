@@ -98,10 +98,7 @@ impl SPARQLClient {
                 hyper::http::header::CONTENT_TYPE,
                 APPLICATION_WWW_FORM_URLENCODED.as_ref(),
             )
-            .header(
-                hyper::http::header::ACCEPT,
-                accept_header,
-            )
+            .header(hyper::http::header::ACCEPT, accept_header)
             // See https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-sparql-http-trailing-headers.html
             .header(hyper::http::header::TE, "trailers, deflate, gzip")
             .body(Self::statement_as_body(&parsed_statement)?)?;
@@ -133,7 +130,8 @@ impl SPARQLClient {
             },
             Err(error) => {
                 tracing::error!("error: {:?}", error);
-                // Convert hyper_util::client::legacy::Error to Error via ServiceError
+                // Convert hyper_util::client::legacy::Error to Error via
+                // ServiceError
                 Err(Error::ServiceError(format!("{}", error)))
             },
         }

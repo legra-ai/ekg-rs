@@ -1,8 +1,8 @@
 #!/bin/sh
-# Check for nightly toolchain
-if ! rustup run nightly rustc --version > /dev/null 2>&1; then
-    echo "Error: Rust nightly toolchain is required but not installed."
-    echo "Install with: rustup install nightly"
+# Check for nightly-2026-10-16 toolchain
+if ! rustup run nightly-2026-10-16 rustc --version > /dev/null 2>&1; then
+    echo "Error: Rust nightly-2026-10-16 toolchain is required but not installed."
+    echo "Install with: rustup install nightly-2026-10-16"
     exit 1
 fi
 
@@ -12,14 +12,14 @@ if [ -z "$RUST_FILES" ]; then
     exit 0
 fi
 
-echo "Running cargo +nightly fmt --check..."
-if ! cargo +nightly fmt -- --check; then
-    echo "Format check failed. Run: cargo +nightly fmt"
+echo "Running cargo +nightly-2026-10-16 fmt --check..."
+if ! cargo +nightly-2026-10-16 fmt -- --check; then
+    echo "Format check failed. Run: cargo +nightly-2026-10-16 fmt"
     exit 1
 fi
 
-echo "Running cargo +nightly clippy..."
-if ! cargo +nightly clippy --all-targets -- -D warnings; then
+echo "Running cargo +nightly-2026-10-16 clippy..."
+if ! cargo +nightly-2026-10-16 clippy --all-targets -- -D warnings; then
     echo "Clippy check failed."
     exit 1
 fi

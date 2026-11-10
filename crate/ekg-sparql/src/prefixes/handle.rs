@@ -34,7 +34,8 @@ impl CPrefixesHandle {
             rdfox_sys::CPrefixes_newEmptyPrefixes(&mut c_params)
         )?;
         let result = CPrefixesHandle(ManuallyDrop::new(c_params));
-        // tracing::debug!(target: LOG_TARGET_DATABASE, "Allocated {:?}", result);
+        // tracing::debug!(target: LOG_TARGET_DATABASE, "Allocated {:?}",
+        // result);
         Ok(result)
     }
 

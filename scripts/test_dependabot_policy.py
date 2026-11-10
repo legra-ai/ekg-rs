@@ -5,6 +5,13 @@ from pathlib import Path
 
 
 class DependabotPolicyTests(unittest.TestCase):
+    def test_formatter_pin_matches_local_hooks(self):
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/ci.yml").read_text()
+        formatter = workflow.split("  fmt:", 1)[1].split("  clippy:", 1)[0]
+        self.assertIn("nightly-2026-10-16", formatter)
+        self.assertIn("nightly-2026-10-16", (root / ".githooks/pre-commit").read_text())
+
     def test_dedicated_merge_identity(self):
         root = Path(__file__).resolve().parents[1]
         path = root / ".github/workflows/dependabot-merge.yml"

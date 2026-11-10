@@ -18,11 +18,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: python3 scripts/test_dependabot_policy.py
-      - uses: dtolnay/rust-toolchain@nightly
+      - uses: dtolnay/rust-toolchain@stable
         with:
+          toolchain: nightly-2026-10-16
           components: rustfmt
       - name: Check formatting
-        run: cargo +nightly fmt --all -- --check
+        run: cargo +nightly-2026-10-16 fmt --all -- --check
 
   # Run clippy linting with the default, redistributable feature set. The
   # all-features graph enables the proprietary RDFox backend, whose SDK is not
